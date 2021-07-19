@@ -10,7 +10,8 @@
           name="no"
           class="long"
           v-model="contact.no"
-          disabled />
+          disabled
+        />
       </div>
       <div class="form-group">
         <label for="lb_name">이름</label>
@@ -47,7 +48,9 @@
         />
       </div>
       <div class="form-group">
-        <button class="btn btn-primary" @click="submitEvent">{{ buttonText }}</button>
+        <button class="btn btn-primary" @click="submitEvent">
+          {{ buttonText }}
+        </button>
         <button class="btn btn-primary" @click="cancelEvent">취소</button>
       </div>
     </div>
@@ -55,7 +58,7 @@
 </template>
 
 <script>
-import EventBus from './EventBus.vue';
+import EventBus from "./EventBus.vue";
 
 export default {
   name: "ContactForm",
@@ -66,46 +69,46 @@ export default {
     },
     contact: {
       type: Object,
-      default(){
+      default() {
         return {
           no: "",
           tel: "",
           address: "",
           photo: "",
         };
-      }
-    }
+      },
+    },
   },
   computed: {
-    buttonText(){
+    buttonText() {
       return this.mode === "update" ? "수 정" : "추 가";
     },
-    headingText(){
+    headingText() {
       return this.mode === "update" ? "연락처 수정" : "새 연락처 추가";
-    }
+    },
   },
   methods: {
-    cancelEvent(){
+    cancelEvent() {
       EventBus.$emit("cancel");
     },
-    submitEvent(){
-      if (this.mode === "update"){
+    submitEvent() {
+      if (this.mode === "update") {
         EventBus.$emit("update-submit", this.contact);
       } else {
         EventBus.$emit("add-submit", this.contact);
       }
-    }
+    },
   },
-  mounted: function(){
+  mounted: function () {
     this.$refs.name.focus();
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .modal {
   display: block;
-  background: rgba(#000, .7);
+  background: rgba(#000, 0.7);
 }
 .form {
   max-width: 400px;

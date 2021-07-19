@@ -38,7 +38,7 @@ export default {
     AddContact,
     UpdateContact,
     UpdatePhoto,
-    Paginate
+    Paginate,
   },
   data() {
     return {
@@ -59,11 +59,11 @@ export default {
     };
   },
   methods: {
-    pageChanged(page){
+    pageChanged(page) {
       this.contactlist.pageno = page;
       this.fetchContacts();
     },
-    fetchContacts(){
+    fetchContacts() {
       this.$axios
         .get(API_URLS.FETCH, {
           params: {
@@ -79,7 +79,7 @@ export default {
           this.contactlist.contacts = [];
         });
     },
-    addContact(contact){
+    addContact(contact) {
       this.$axios
         .post(API_URLS.ADD, contact)
         .then(() => {
@@ -90,7 +90,7 @@ export default {
           console.log(`addContact failed: ${ex}`);
         });
     },
-    updateContact(contact){
+    updateContact(contact) {
       this.$axios
         .put(API_URLS.UPDATE(contact.no), contact)
         .then(() => {
@@ -100,7 +100,7 @@ export default {
           console.log(`updateContact failed: ${ex}`);
         });
     },
-    fetchContactOne(no){
+    fetchContactOne(no) {
       this.$axios
         .get(API_URLS.FETCH_ONE(no), {
           params: { no },
@@ -112,7 +112,7 @@ export default {
           console.log(`fetchContactOne failed: ${ex}`);
         });
     },
-    deleteContact(no){
+    deleteContact(no) {
       this.$axios
         .delete(API_URLS.DELETE(no))
         .then(() => {
@@ -120,9 +120,9 @@ export default {
         })
         .catch((ex) => {
           console.log(`deleteContact failed: ${ex}`);
-        });  
+        });
     },
-    updatePhoto(no, file){
+    updatePhoto(no, file) {
       const data = new FormData();
       data.append("photo", file);
       this.$axios
@@ -132,17 +132,20 @@ export default {
         })
         .catch((ex) => {
           console.log(`updatePhoto failed: ${ex}`);
-        });  
+        });
     },
   },
   computed: {
-    totalpage(){
-      return Math.floor((this.contactlist.totalcount - 1) / this.contactlist.pagesize) + 1;
-    }
+    totalpage() {
+      return (
+        Math.floor(
+          this.contactlist.totalcount - 1 / this.contactlist.pagesize
+        ) + 1
+      );
+    },
   },
-  mounted: function(){
+  mounted: function () {
     this.fetchContacts();
-    
     EventBus.$on("cancel", () => {
       this.currentView = null;
     });
@@ -162,24 +165,24 @@ export default {
       this.currentView = "UpdateContact";
     });
     EventBus.$on("delete-contact", (no) => {
-      this.deleteContact(no)
+      this.deleteContact(no);
     });
     EventBus.$on("edit-photo", (no) => {
       this.fetchContactOne(no);
       this.currentView = "UpdatePhoto";
     });
     EventBus.$on("update-photo", (no, file) => {
-      if(typeof file !== 'undefined') {
+      if (typeof file !== "undefined") {
         this.updatePhoto(no, file);
       }
       this.currentView = null;
     });
   },
   watch: {
-    ["contactlist.pageno"]: function(){
+    "contactlist.pageno": function () {
       this.$refs.paging.selected = this.contactlist.pageno;
-    }
-  }
+    },
+  },
 };
 </script>
 

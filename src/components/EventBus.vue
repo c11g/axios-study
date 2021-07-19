@@ -1,8 +1,9 @@
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 
 const EventBus = new Vue({
-  name: 'EventBus'
+  name: "EventBus",
 });
+
 export default EventBus;
 </script>

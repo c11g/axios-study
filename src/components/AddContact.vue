@@ -10,7 +10,3 @@ export default {
   components: { ContactForm },
 };
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="{no, name, tel, address, photo} in contacts" :key="tel">
+          <tr v-for="{ no, name, tel, address, photo } in contacts" :key="tel">
             <td>{{ name }}</td>
             <td>{{ tel }}</td>
             <td>{{ address }}</td>
@@ -34,8 +34,12 @@
               </a>
             </td>
             <td>
-              <button class="btn btn-primary" @click="editContact(no)">편집</button>
-              <button class="btn btn-primary" @click="deleteContact(no)">삭제</button>
+              <button class="btn btn-primary" @click="editContact(no)">
+                편집
+              </button>
+              <button class="btn btn-primary" @click="deleteContact(no)">
+                삭제
+              </button>
             </td>
           </tr>
         </tbody>
@@ -53,21 +57,21 @@ export default {
     contacts: Array,
   },
   methods: {
-    addContact(){
+    addContact() {
       EventBus.$emit("add-contact-form");
     },
-    editContact(no){
+    editContact(no) {
       EventBus.$emit("edit-contact-form", no);
     },
-    deleteContact(no){
-      if(confirm("정말로 삭제하시겠습니까?")){
+    deleteContact(no) {
+      if (confirm("정말로 삭제하시겠습니까?")) {
         EventBus.$emit("delete-contact", no);
       }
     },
-    editPhoto(no){
+    editPhoto(no) {
       EventBus.$emit("edit-photo", no);
     },
-  }
+  },
 };
 </script>
 
@@ -75,7 +79,8 @@ export default {
 .addnew {
   margin: 10px 0;
 }
-#list th, #list td {
+#list th,
+#list td {
   text-align: center;
   vertical-align: middle;
 }
