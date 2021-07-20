@@ -49,27 +49,30 @@
 </template>
 
 <script>
-import EventBus from "@/components/EventBus";
+import { mapState } from "vuex";
+import { ACTIONS } from "@/config";
 
 export default {
   name: "ContactList",
-  props: {
-    contacts: Array,
+  computed: {
+    ...mapState({
+      contacts: (state) => state.contactlist.contacts,
+    }),
   },
   methods: {
     addContact() {
-      EventBus.$emit("add-contact-form");
+      this.$store.commit(ACTIONS.ADD_CONTACT_FORM);
     },
     editContact(no) {
-      EventBus.$emit("edit-contact-form", no);
+      this.$store.dispatch(ACTIONS.EDIT_CONTACT_FORM, { no });
     },
     deleteContact(no) {
       if (confirm("정말로 삭제하시겠습니까?")) {
-        EventBus.$emit("delete-contact", no);
+        this.$store.dispatch(ACTIONS.DELETE_CONTACT, { no });
       }
     },
     editPhoto(no) {
-      EventBus.$emit("edit-photo", no);
+      this.$store.dispatch(ACTIONS.EDIT_PHOTO, { no });
     },
   },
 };

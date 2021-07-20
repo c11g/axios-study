@@ -58,7 +58,8 @@
 </template>
 
 <script>
-import EventBus from "./EventBus.vue";
+import { mapState } from "vuex";
+import { ACTIONS } from "@/config";
 
 export default {
   name: "ContactForm",
@@ -66,17 +67,6 @@ export default {
     mode: {
       type: String,
       default: "add",
-    },
-    contact: {
-      type: Object,
-      default() {
-        return {
-          no: "",
-          tel: "",
-          address: "",
-          photo: "",
-        };
-      },
     },
   },
   computed: {
@@ -86,16 +76,17 @@ export default {
     headingText() {
       return this.mode === "update" ? "연락처 수정" : "새 연락처 추가";
     },
+    ...mapState(["contact"]),
   },
   methods: {
     cancelEvent() {
-      EventBus.$emit("cancel");
+      this.$store.commit(ACTIONS.CANCEL_FORM);
     },
     submitEvent() {
       if (this.mode === "update") {
-        EventBus.$emit("update-submit", this.contact);
+        this.$store.dispatch(ACTIONS.UPDATE_CONTACT, { contact: this.contact });
       } else {
-        EventBus.$emit("add-submit", this.contact);
+        this.$store.dispatch(ACTIONS.ADD_CONTACT, { contact: this.contact });
       }
     },
   },

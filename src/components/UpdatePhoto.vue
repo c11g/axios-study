@@ -29,8 +29,12 @@
           </div>
         </div>
         <div class="form-group">
-          <button class="btn btn-primary" @click="photoSubmit">변경</button>
-          <button class="btn btn-primary" @click="cancelEvent">취소</button>
+          <button class="btn btn-primary" @click.prevent="photoSubmit">
+            변경
+          </button>
+          <button class="btn btn-primary" @click.prevent="cancelEvent">
+            취소
+          </button>
         </div>
       </form>
     </div>
@@ -38,7 +42,7 @@
 </template>
 
 <script>
-import EventBus from "./EventBus.vue";
+import { ACTIONS } from "@/config";
 
 export default {
   name: "UpdatePhoto",
@@ -53,11 +57,18 @@ export default {
   },
   methods: {
     cancelEvent() {
-      EventBus.$emit("cancel");
+      this.$store.commit(ACTIONS.CANCEL_FORM);
     },
     photoSubmit() {
       const file = this.$refs.photofile.files[0];
-      EventBus.$emit("update-photo", this.contact.no, file);
+      if (typeof file !== "undefined") {
+        this.$store.dispatch(ACTIONS.UPDATE_PHOTO, {
+          no: this.contact.no,
+          file: file,
+        });
+      } else {
+        this.$store.commit(ACTIONS.CANCEL_FORM);
+      }
     },
     photoChange() {
       this.shoPreview = !this.shoPreview;
